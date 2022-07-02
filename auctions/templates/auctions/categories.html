@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    Categories
+{% endblock %}
+
+{% block body %}
+
+    <div class="container" >
+        <h2 style="color: green; margin-bottom: 25px;">Categories</h2>
+        <div class="row justify-content-center text-center">
+            {% for category in categories %}      
+                <div class="col-lg-5 border rounded-lg shadow m-3 p-4">
+                    <a href="{% url 'category' category.id %}" class="text-info stretched-link" style="font-size: large;">{{ category.catname }} <span class="badge badge-info">{{ category.catcount }}</span></a>
+                </div>
+            {% endfor %}
+        </div> 
+    </div>  
+{% endblock %}

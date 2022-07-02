@@ -1,0 +1,51 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    Category
+{% endblock %}
+
+{% block body %}
+
+    <div class="container" >
+        {% if listings %}
+            <h2 style="color: green; margin-bottom: 25px;">{{ category.catname }}</h2>
+        {% else %}
+            <h2 style="color: green; margin-bottom: 25px;">{{ category.catname }}</h2>
+            <li class="pb-4 text-info">There are no listings for this category yet. <a href="{% url 'categories' %}">Return to Categories</a></li>
+        {% endif %}
+        {% for listing in listings %}
+            <div class="row mb-4 p-3 border rounded-lg shadow text-secondary">
+                <div class="col-lg-3" style="background-color: white; text-align: center;">
+                    {% if listing.image %}
+                        <img src="{{ listing.image }}" alt="No Image" style="height: 140px; max-width: 250px;">
+                    {% else %}
+                        <img src="https://st4.depositphotos.com/8511412/20420/v/380/depositphotos_204201860-stock-illustration-add-photo-icon-vector-image.jpg" style="height: 140px; max-width: 250px;">
+                    {% endif %}
+                </div>
+                <div class="col ml-3">
+                    <h3 class="pt-2"><a class="text-info stretched-link" href="{% url 'listing' listing.id %}">{{ listing.title }}</a></h3>
+                    <p class="pt-3">Price: {{ listing.bid }} </p>
+                    <p class="small">Created: {{ listing.created }}</p>
+                </div>
+                <!-- Adds a Watching badge to each listing being watched by current user-->
+                <div class="col-lg-2 text-right">
+                    {% if user.is_authenticated %}
+                        {% for item in watchlist %}
+                            {% if item.listing_id.id == listing.id %}
+                                <h6 class="pt-3 pr-2"><span class="badge badge-pill badge-info shadow-sm">Watching</span></h6>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% for winning_bid in winning_bids %}
+                            {% if winning_bid == listing.id %}
+                                <h6 class="pt-3"><span class="badge badge-pill badge-info shadow-sm">High Bidder</span></h6>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    
+    
+    </div>  
+{% endblock %}

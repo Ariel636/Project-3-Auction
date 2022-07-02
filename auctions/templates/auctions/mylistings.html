@@ -1,0 +1,94 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    My Listings
+{% endblock %}
+
+{% block body %}
+
+    <div class="container" >
+        {% if mylistings_open %}
+            <h2 style="color: green; margin-bottom: 25px;">My Open Listings</h2>
+        {% else %}
+            <h2 style="color: green; margin-bottom: 25px;">My Open Listings</h2>
+            <li class="pb-4 text-info">Currently you have no open listings. <a href="{% url 'index' %}">Return to Active Listings</a></li>
+        {% endif %}
+        {% for listing in mylistings_open %}
+            <div class="row mb-4 p-3 border rounded-lg shadow text-secondary">
+                <div class="col-lg-3" style="background-color: white; text-align: center;">
+                    {% if listing.image %}
+                        <img src="{{ listing.image }}" alt="No Image" style="height: 140px; max-width: 250px;">
+                    {% else %}
+                        <img src="https://st4.depositphotos.com/8511412/20420/v/380/depositphotos_204201860-stock-illustration-add-photo-icon-vector-image.jpg" style="height: 140px; max-width: 250px;">
+                    {% endif %}
+                </div>
+                <div class="col ml-3">
+                    <h3 class="pt-2"><a class="text-info stretched-link" href="{% url 'listing' listing.id %}">{{ listing.title }}</a></h3>
+                    <p class="pt-3">Price: {{ listing.bid }} </p>
+                    <p class="small">Created: {{ listing.created }}</p>
+                </div>
+                <!-- Adds a Watching badge to each listing being watched by current user-->
+                <div class="col-lg-2 text-right">
+                    {% if user.is_authenticated %}
+                        {% for item in watchlist %}
+                            {% if item.listing_id.id == listing.id %}
+                                <h6 class="pt-3 pr-2"><span class="badge badge-pill badge-info shadow-sm">Watching</span></h6>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+
+        <hr class="mt-5 pb-3">
+
+        {% if mylistings_closed %}
+            <h2 style="color: green; margin-bottom: 25px;">My Closed Listings</h2>
+        {% else %}
+            <h2 style="color: green; margin-bottom: 25px;">My Closed Listings</h2>
+            <li class="pb-4 text-info">Currently you have no closed listings. <a href="{% url 'index' %}">Return to Active Listings</a></li>
+        {% endif %}
+        {% for listing in mylistings_closed %}
+            <div class="row mb-4 p-3 border rounded-lg shadow text-secondary">
+                <div class="col-lg-3" style="background-color: white; text-align: center;">
+                    {% if listing.image %}
+                        <img src="{{ listing.image }}" alt="No Image" style="height: 140px; max-width: 250px;">
+                    {% else %}
+                        <img src="https://st4.depositphotos.com/8511412/20420/v/380/depositphotos_204201860-stock-illustration-add-photo-icon-vector-image.jpg" style="height: 140px; max-width: 250px;">
+                    {% endif %}
+                </div>
+                <div class="col ml-3">
+                    <h3 class="pt-2"><a class="text-info stretched-link" href="{% url 'listing' listing.id %}">{{ listing.title }}</a></h3>
+                    <p class="pt-3">Price: {{ listing.bid }} </p>
+                    <p class="small">Created: {{ listing.created }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    
+        <hr class="mt-5 pb-3">
+
+        {% if otherlistings_won %}
+            <h2 style="color: green; margin-bottom: 25px;">Listings Won</h2>
+        {% else %}
+            <h2 style="color: green; margin-bottom: 25px;">Listings Won</h2>
+            <li class="pb-4 text-info">Currently you have no listings won. <a href="{% url 'index' %}">Return to Active Listings</a></li>
+        {% endif %}
+        {% for listing in otherlistings_won %}
+            <div class="row mb-4 p-3 border rounded-lg shadow text-secondary">
+                <div class="col-lg-3" style="background-color: white; text-align: center;">
+                    {% if listing.image %}
+                        <img src="{{ listing.image }}" alt="No Image" style="height: 140px; max-width: 250px;">
+                    {% else %}
+                        <img src="https://st4.depositphotos.com/8511412/20420/v/380/depositphotos_204201860-stock-illustration-add-photo-icon-vector-image.jpg" style="height: 140px; max-width: 250px;">
+                    {% endif %}
+                </div>
+                <div class="col ml-3">
+                    <h3 class="pt-2"><a class="text-info stretched-link" href="{% url 'listing' listing.id %}">{{ listing.title }}</a></h3>
+                    <p class="pt-3">Price: {{ listing.bid }} </p>
+                    <p class="small">Created: {{ listing.created }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    
+    </div>  
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    Watchlist
+{% endblock %}
+
+{% block body %}
+
+    <div class="container" >
+        {% if watchlist_len != 0 %}
+            <h2 style="color: green; margin-bottom: 25px;">My Watchlist</h2>
+        {% else %}
+            <h2 style="color: green; margin-bottom: 25px;">My Watchlist</h2>
+            <li>You are not watching any items at the moment. <a href="{% url 'index' %}">Return to Active listings</a></li>
+        {% endif %}
+        {% for listing in watchlist %}
+            {% if listing.listing_id.active == True %}
+                <div class="row mb-4 p-3 border rounded-lg shadow text-secondary">
+                    <div class="col-lg-3" style="background-color: white; text-align: center;">
+                        {% if listing.listing_id.image %}
+                            <img src="{{ listing.listing_id.image }}" alt="No Image" style="height: 140px; max-width: 250px;">
+                        {% else %}
+                            <img src="https://st4.depositphotos.com/8511412/20420/v/380/depositphotos_204201860-stock-illustration-add-photo-icon-vector-image.jpg" style="height: 140px; max-width: 250px;">
+                        {% endif %}
+                    </div>
+                    <div class="col ml-3">
+                        <h3 class="pt-2"><a class="text-info stretched-link" href="{% url 'listing' listing.listing_id.id %}">{{ listing.listing_id.title }}</a></h3>
+                        <p class="pt-3">Price: {{ listing.listing_id.bid }} </p>
+                        <p class="small">Created: {{ listing.listing_id.created }}</p>
+                    </div>
+                    <!-- Adds a Watching badge to each listing being watched by current user-->
+                    <div class="col-lg-2 text-right">
+                        {% if user.is_authenticated %}
+                            {% for winning_bid in winning_bids %}
+                                {% if winning_bid == listing.listing_id.id %}
+                                    <h6 class="pt-3"><span class="badge badge-pill badge-info shadow-sm">High Bidder</span></h6>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>  
+{% endblock %}
